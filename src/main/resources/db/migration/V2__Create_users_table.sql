@@ -5,7 +5,7 @@ create table users
             primary key,
     nickname varchar(128) not null,
     email varchar(128) not null,
-    sex numeric(1) not null,
+    sex integer not null,
     birthday timestamp,
     city_id bigint not null
         constraint users_cities_id_fk
