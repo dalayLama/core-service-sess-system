@@ -2,6 +2,8 @@ package com.sess.core.users;
 
 import javax.persistence.*;
 
+@Entity
+@Table(name = "cities")
 public class City {
 
     @Id
