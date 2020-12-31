@@ -10,4 +10,7 @@ public interface ErrorsCodes {
 
     String FAILED_SAVE_NEW_USER = "";
 
+    String READ_DTO_USER_DATA_ERROR = "";
+
+    String WRITE_DTO_USER_DATA_ERROR = "";
 }
