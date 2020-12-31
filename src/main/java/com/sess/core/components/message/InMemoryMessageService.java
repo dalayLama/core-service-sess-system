@@ -40,7 +40,13 @@ public class InMemoryMessageService implements MessageService {
                         Map.of(Locale.RU, "У нового пользователя должен быть пустой идентификатор")),
                 MessageId.FAILED_SAVE_NEW_USER,
                 new Message(ErrorsCodes.FAILED_SAVE_NEW_USER,
-                        Map.of(Locale.RU, "Не удалось зарегистрировать нового пользователя"))
+                        Map.of(Locale.RU, "Не удалось зарегистрировать нового пользователя")),
+                MessageId.READ_DTO_USER_DATA_ERROR,
+                new Message(ErrorsCodes.READ_DTO_USER_DATA_ERROR,
+                        Map.of(Locale.RU, "Не удалось обработать данные нового пользователя")),
+                MessageId.WRITE_DTO_USER_DATA_ERROR,
+                new Message(ErrorsCodes.WRITE_DTO_USER_DATA_ERROR,
+                        Map.of(Locale.RU, "Не удалось сформировать ответ для пользователя"))
         ));
     }
 
