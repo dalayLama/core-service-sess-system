@@ -46,7 +46,10 @@ public class InMemoryMessageService implements MessageService {
                         Map.of(Locale.RU, "Не удалось обработать данные нового пользователя")),
                 MessageId.WRITE_DTO_USER_DATA_ERROR,
                 new Message(ErrorsCodes.WRITE_DTO_USER_DATA_ERROR,
-                        Map.of(Locale.RU, "Не удалось сформировать ответ для пользователя"))
+                        Map.of(Locale.RU, "Не удалось сформировать ответ для пользователя")),
+                MessageId.WRITE_DTO_EVENT_DATA_ERROR,
+                new Message(ErrorsCodes.WRITE_DTO_EVENT_DATA_ERROR,
+                        Map.of(Locale.RU, "Не удалось сформировать ответ для данных"))
         ));
     }
 

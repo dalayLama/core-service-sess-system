@@ -13,4 +13,6 @@ public interface ErrorsCodes {
     String READ_DTO_USER_DATA_ERROR = "";
 
     String WRITE_DTO_USER_DATA_ERROR = "";
+
+    String WRITE_DTO_EVENT_DATA_ERROR = "";
 }

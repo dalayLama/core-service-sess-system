@@ -1,9 +1,8 @@
-package com.sess.core.api.rest;
+package com.sess.core.api.rest.handlers;
 
 import com.sess.core.ErrorsCodes;
 import com.sess.core.TestUtils;
 import com.sess.core.api.rest.handlers.exceptions.HttpStatusOperationException;
-import com.sess.core.api.rest.handlers.UserRestApiHandlerImpl;
 import com.sess.core.components.message.MessageId;
 import com.sess.core.components.message.MessageService;
 import com.sess.core.dto.DTOUser;
