@@ -17,8 +17,8 @@ import com.sess.core.exceptions.ErrorMessage;
 import com.sess.core.users.City;
 import com.sess.core.users.User;
 import com.sess.core.users.registration.UserRegistrationService;
-import com.sess.core.users.registration.exceptions.RegistrationException;
-import com.sess.core.users.registration.exceptions.ValidationException;
+import com.sess.core.exceptions.SaveException;
+import com.sess.core.exceptions.ValidationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
@@ -164,7 +164,7 @@ class UserRestApiHandlerImplTest {
         UserDTOAdapter userAdapter = spy(new UserDTOAdapterImpl(cityAdapter));
         MessageService messageService = mock(MessageService.class);
         when(registrationService.register(any(User.class)))
-                .thenThrow(new RegistrationException(ErrorBuilder.listMessages(false, expectedErrorMessages)));
+                .thenThrow(new SaveException(ErrorBuilder.listMessages(false, expectedErrorMessages)));
 
         UserRestApiHandlerImpl userRestApiHandler = new UserRestApiHandlerImpl(registrationService, userAdapter, messageService);
 

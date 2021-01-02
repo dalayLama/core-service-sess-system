@@ -7,9 +7,9 @@ import com.sess.core.dao.repositories.UserJpaRepository;
 import com.sess.core.exceptions.ErrorBuilder;
 import com.sess.core.exceptions.ErrorMessage;
 import com.sess.core.users.User;
-import com.sess.core.users.registration.exceptions.NotNullableUserId;
-import com.sess.core.users.registration.exceptions.RegistrationException;
-import com.sess.core.users.registration.exceptions.ValidationException;
+import com.sess.core.exceptions.NotNullableId;
+import com.sess.core.exceptions.SaveException;
+import com.sess.core.exceptions.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -37,10 +37,10 @@ public class JpaRegistrationService implements UserRegistrationService {
 
     @Override
     @Transactional
-    public User register(User user) throws RegistrationException {
+    public User register(User user) throws SaveException {
         if (Objects.nonNull(user.getId())) {
             ErrorMessage error = messageService.sayError(MessageId.NOT_NULLABLE_USER_ID);
-            throw new NotNullableUserId(error);
+            throw new NotNullableId(error);
         }
 
         validate(user);
@@ -49,7 +49,7 @@ public class JpaRegistrationService implements UserRegistrationService {
         } catch (Exception e) {
             LOG.error(e.getMessage(), e);
             ErrorMessage error = messageService.sayError(MessageId.FAILED_SAVE_NEW_USER);
-            throw new RegistrationException(ErrorBuilder.singletonMessage(false, error));
+            throw new SaveException(ErrorBuilder.singletonMessage(false, error));
         }
     }
 

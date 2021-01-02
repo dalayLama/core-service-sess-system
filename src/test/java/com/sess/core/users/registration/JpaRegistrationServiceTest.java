@@ -7,9 +7,9 @@ import com.sess.core.components.validator.Validator;
 import com.sess.core.dao.repositories.UserJpaRepository;
 import com.sess.core.exceptions.ErrorMessage;
 import com.sess.core.users.User;
-import com.sess.core.users.registration.exceptions.NotNullableUserId;
-import com.sess.core.users.registration.exceptions.RegistrationException;
-import com.sess.core.users.registration.exceptions.ValidationException;
+import com.sess.core.exceptions.NotNullableId;
+import com.sess.core.exceptions.SaveException;
+import com.sess.core.exceptions.ValidationException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -36,8 +36,8 @@ class JpaRegistrationServiceTest {
         User user = new User();
         user.setId(2L);
 
-        NotNullableUserId thrown = assertThrows(
-                NotNullableUserId.class,
+        NotNullableId thrown = assertThrows(
+                NotNullableId.class,
                 () -> service.register(user)
         );
 
@@ -93,8 +93,8 @@ class JpaRegistrationServiceTest {
                 .thenThrow(new RuntimeException("Test exception"));
 
         JpaRegistrationService service = new JpaRegistrationService(repository, messageService, validator);
-        RegistrationException thrown = assertThrows(
-                RegistrationException.class,
+        SaveException thrown = assertThrows(
+                SaveException.class,
                 () -> service.register(user)
         );
 
