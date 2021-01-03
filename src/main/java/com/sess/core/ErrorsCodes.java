@@ -15,4 +15,12 @@ public interface ErrorsCodes {
     String WRITE_DTO_USER_DATA_ERROR = "";
 
     String WRITE_DTO_EVENT_DATA_ERROR = "";
+
+    String NOT_NULLABLE_GROUP_ID = "";
+
+    String GROUP_NOT_FOUND = "";
+
+    String USER_NOT_FOUND = "";
+
+    String USER_ALREADY_EXIST_IN_GROUP = "";
 }
