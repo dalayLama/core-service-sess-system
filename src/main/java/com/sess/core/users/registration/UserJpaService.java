@@ -16,12 +16,13 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
-public class JpaRegistrationService implements UserRegistrationService {
+public class UserJpaService implements UserService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(JpaRegistrationService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserJpaService.class);
 
     private final UserJpaRepository userJpaRepository;
 
@@ -29,7 +30,7 @@ public class JpaRegistrationService implements UserRegistrationService {
 
     private final Validator validator;
 
-    public JpaRegistrationService(UserJpaRepository userJpaRepository, MessageService messageService, Validator validator) {
+    public UserJpaService(UserJpaRepository userJpaRepository, MessageService messageService, Validator validator) {
         this.userJpaRepository = userJpaRepository;
         this.messageService = messageService;
         this.validator = validator;
@@ -51,6 +52,11 @@ public class JpaRegistrationService implements UserRegistrationService {
             ErrorMessage error = messageService.sayError(MessageId.FAILED_SAVE_NEW_USER);
             throw new SaveException(ErrorBuilder.singletonMessage(false, error));
         }
+    }
+
+    @Override
+    public Optional<User> findById(long userId) {
+        return userJpaRepository.findById(userId);
     }
 
     private void validate(User user) throws ValidationException {

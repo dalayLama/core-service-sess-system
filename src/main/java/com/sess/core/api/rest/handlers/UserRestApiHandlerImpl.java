@@ -10,7 +10,7 @@ import com.sess.core.dto.adapters.exceptions.ConvertToDTOException;
 import com.sess.core.exceptions.ErrorBuilder;
 import com.sess.core.exceptions.ErrorMessage;
 import com.sess.core.users.User;
-import com.sess.core.users.registration.UserRegistrationService;
+import com.sess.core.users.registration.UserService;
 import com.sess.core.exceptions.SaveException;
 import com.sess.core.exceptions.ValidationException;
 import org.springframework.http.HttpStatus;
@@ -19,14 +19,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserRestApiHandlerImpl implements UserRestApiHandler {
 
-    private final UserRegistrationService registrationService;
+    private final UserService registrationService;
 
     private final UserDTOAdapter adapter;
 
     private final MessageService messageService;
 
     public UserRestApiHandlerImpl(
-            UserRegistrationService registrationService,
+            UserService registrationService,
             UserDTOAdapter adapter,
             MessageService messageService) {
         this.registrationService = registrationService;

@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class JpaRegistrationServiceTest {
+class UserJpaServiceTest {
 
     @Test
     public void shouldThrowNotNullableUserIdExceptionWhenUserDoesNotHaveId() {
@@ -32,7 +32,7 @@ class JpaRegistrationServiceTest {
         Validator validator = mock(Validator.class);
         when(messageService.sayError(MessageId.NOT_NULLABLE_USER_ID))
                 .thenReturn(expectedErrorMessages.get(0));
-        JpaRegistrationService service = new JpaRegistrationService(repository, messageService, validator);
+        UserJpaService service = new UserJpaService(repository, messageService, validator);
         User user = new User();
         user.setId(2L);
 
@@ -61,7 +61,7 @@ class JpaRegistrationServiceTest {
         when(validator.validate(user))
                 .thenReturn(Collections.singleton(expectedErrorMessages.get(0).getMessage()));
 
-        JpaRegistrationService service = new JpaRegistrationService(repository, messageService, validator);
+        UserJpaService service = new UserJpaService(repository, messageService, validator);
         ValidationException thrown = assertThrows(
                 ValidationException.class,
                 () -> service.register(user)
@@ -92,7 +92,7 @@ class JpaRegistrationServiceTest {
         when(repository.save(user))
                 .thenThrow(new RuntimeException("Test exception"));
 
-        JpaRegistrationService service = new JpaRegistrationService(repository, messageService, validator);
+        UserJpaService service = new UserJpaService(repository, messageService, validator);
         SaveException thrown = assertThrows(
                 SaveException.class,
                 () -> service.register(user)
