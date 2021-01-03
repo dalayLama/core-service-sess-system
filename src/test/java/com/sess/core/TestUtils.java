@@ -2,6 +2,7 @@ package com.sess.core;
 
 import com.sess.core.dto.DTOCity;
 import com.sess.core.dto.DTOUser;
+import com.sess.core.groups.Group;
 import com.sess.core.users.City;
 import com.sess.core.users.Sex;
 import com.sess.core.users.User;
@@ -13,7 +14,25 @@ public abstract class TestUtils {
 
     private static long ID_USER = 1;
 
+    private static long ID_GROUP = 1;
+
     private TestUtils() {}
+
+    public static Group createNewGroup(User creator) {
+        long id = newGroupId();
+        City city = createCity();
+        Group group = new Group();
+        group.setTitle(String.format("title%d", id));
+        group.setCity(city);
+        group.setCreator(creator);
+        return group;
+    }
+
+    public static User createNewUser() {
+        User user = createUser();
+        user.setId(null);
+        return user;
+    }
 
     public static User createUser() {
         long newId = newId();
@@ -56,6 +75,10 @@ public abstract class TestUtils {
 
     private static long newId() {
         return ID_USER++;
+    }
+
+    private static long newGroupId() {
+        return ID_GROUP++;
     }
 
 }

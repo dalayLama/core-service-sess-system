@@ -1,5 +1,6 @@
 package com.sess.core.users;
 
+import com.sess.core.groups.Group;
 import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
@@ -9,6 +10,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -56,6 +60,14 @@ public class User {
     @Column(name = "security_key", unique = true, length = 100, nullable = false)
     @Type(type="uuid-char")
     private UUID securityKey;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "user_of_groups",
+            joinColumns = { @JoinColumn(name = "user_id") },
+            inverseJoinColumns = { @JoinColumn(name = "group_id") }
+    )
+    private List<Group> groups = new ArrayList<>();
 
     public User() {
     }
@@ -115,4 +127,24 @@ public class User {
     public void setSecurityKey(UUID securityKey) {
         this.securityKey = securityKey;
     }
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
+
+    public void addGroup(Group group) {
+        groups.add(group);
+    }
+
+    public void removeGroup(long idGroup) {
+        groups.stream()
+                .filter(g -> Objects.equals(g.getId(), idGroup))
+                .findFirst()
+                .ifPresent(g -> groups.remove(g));
+    }
+
 }
