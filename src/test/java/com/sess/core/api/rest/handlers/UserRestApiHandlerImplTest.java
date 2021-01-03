@@ -39,7 +39,7 @@ class UserRestApiHandlerImplTest {
         UserDTOAdapter userAdapter = spy(new UserDTOAdapterImpl(cityAdapter));
         MessageService messageService = mock(MessageService.class);
         when(registrationService.register(any(User.class)))
-                .thenReturn(TestUtils.createNewUser());
+                .thenReturn(TestUtils.createUser());
 
         DTOUser dtoUser = TestUtils.createDTOUser(null);
 
@@ -102,7 +102,7 @@ class UserRestApiHandlerImplTest {
         when(messageService.sayError(MessageId.WRITE_DTO_USER_DATA_ERROR))
                 .thenReturn(expectedErrorMessages.get(0));
         when(registrationService.register(any(User.class)))
-                .thenReturn(TestUtils.createNewUser());
+                .thenReturn(TestUtils.createUser());
 
         UserRestApiHandlerImpl userRestApiHandler = new UserRestApiHandlerImpl(registrationService, userAdapter, messageService);
 

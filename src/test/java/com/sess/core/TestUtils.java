@@ -15,7 +15,7 @@ public abstract class TestUtils {
 
     private TestUtils() {}
 
-    public static User createNewUser() {
+    public static User createUser() {
         long newId = newId();
         User user = new User();
         user.setId(newId);
