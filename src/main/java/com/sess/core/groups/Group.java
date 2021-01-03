@@ -6,6 +6,7 @@ import com.sess.core.users.User;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Group where occur events
@@ -101,4 +102,16 @@ public class Group {
     public void setDeleted(boolean deleted) {
         this.deleted = deleted;
     }
+
+    public void addUser(User user) {
+        users.add(user);
+    }
+
+    public void removeUser(long userId) {
+        users.stream()
+                .filter(u -> Objects.equals(u.getId(), userId))
+                .findFirst()
+                .ifPresent(u -> users.remove(u));
+    }
+
 }
