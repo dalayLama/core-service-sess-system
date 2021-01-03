@@ -9,7 +9,7 @@ import com.sess.core.dto.adapters.DTOOnlyDataEventAdapterImpl;
 import com.sess.core.dto.adapters.exceptions.ConvertToDTOException;
 import com.sess.core.events.CapEventService;
 import com.sess.core.events.Event;
-import com.sess.core.events.exceptions.UserNotFoundException;
+import com.sess.core.users.exceptions.UserNotFoundException;
 import com.sess.core.exceptions.ErrorMessage;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;

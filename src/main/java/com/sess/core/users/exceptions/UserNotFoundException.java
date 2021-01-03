@@ -1,4 +1,4 @@
-package com.sess.core.events.exceptions;
+package com.sess.core.users.exceptions;
 
 import com.sess.core.exceptions.ErrorBuilder;
 import com.sess.core.exceptions.ErrorMessage;

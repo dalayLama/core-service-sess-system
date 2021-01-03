@@ -8,7 +8,7 @@ import com.sess.core.dto.adapters.DTOOnlyDataEventAdapter;
 import com.sess.core.dto.adapters.exceptions.ConvertToDTOException;
 import com.sess.core.events.Event;
 import com.sess.core.events.EventService;
-import com.sess.core.events.exceptions.UserNotFoundException;
+import com.sess.core.users.exceptions.UserNotFoundException;
 import com.sess.core.exceptions.Error;
 import com.sess.core.exceptions.ErrorBuilder;
 import org.slf4j.Logger;

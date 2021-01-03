@@ -1,5 +1,6 @@
 package com.sess.core.events;
 
+import com.sess.core.groups.Group;
 import com.sess.core.users.User;
 
 import java.time.LocalDateTime;

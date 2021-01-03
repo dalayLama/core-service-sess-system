@@ -4,7 +4,10 @@ import com.sess.core.users.City;
 import com.sess.core.users.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,13 +32,16 @@ public class Group {
 
     @ManyToOne
     @JoinColumn(name = "city_id", nullable = false)
+    @NotNull(message = "Не указан город группы")
     private City city;
 
     @ManyToOne
     @JoinColumn(name = "creator_id", nullable = false)
+    @NotNull(message = "Не указан создатель группы")
     private User creator;
 
     @Column(name = "title", length = 100, nullable = false, unique = true)
+    @NotBlank(message = "Не указано название группы")
     private String title;
 
     @Column(name = "description", columnDefinition = "TEXT")
@@ -105,6 +111,10 @@ public class Group {
 
     public void addUser(User user) {
         users.add(user);
+    }
+
+    public void addUsers(Collection<? extends User> users) {
+        this.users.addAll(users);
     }
 
     public void removeUser(long userId) {

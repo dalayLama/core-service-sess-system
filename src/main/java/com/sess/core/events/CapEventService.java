@@ -1,7 +1,7 @@
 package com.sess.core.events;
 
-import com.sess.core.events.exceptions.GroupNotFoundException;
-import com.sess.core.events.exceptions.UserNotFoundException;
+import com.sess.core.groups.exceptions.GroupNotFoundException;
+import com.sess.core.users.exceptions.UserNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;

@@ -8,6 +8,7 @@ import com.sess.core.users.Sex;
 import com.sess.core.users.User;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.UUID;
 
 public abstract class TestUtils {
@@ -16,15 +17,47 @@ public abstract class TestUtils {
 
     private static long ID_GROUP = 1;
 
+    private static long CITY_ID = 1;
+
     private TestUtils() {}
 
     public static Group createNewGroup(User creator) {
+        Group group = createGroup(creator);
+        group.setId(null);
+        return group;
+    }
+
+    public static Group createGroup(User creator) {
         long id = newGroupId();
         City city = createCity();
         Group group = new Group();
+        group.setId(id);
         group.setTitle(String.format("title%d", id));
         group.setCity(city);
         group.setCreator(creator);
+        return group;
+    }
+
+    public static Group createGroupWithUsers(User creator, Collection<? extends User> users) {
+        Group group = createGroup(creator);
+        group.addUsers(users);
+        users.forEach(u -> u.addGroup(group));
+        return group;
+    }
+
+    public static void copy(Group target, Group source) {
+        target.setId(source.getId());
+        target.setTitle(source.getTitle());
+        target.setCity(source.getCity());
+        target.setCreator(source.getCreator());
+        target.setDescription(source.getDescription());
+        target.setUsers(source.getUsers());
+        target.setDeleted(source.isDeleted());
+    }
+
+    public static Group createCopy(Group source) {
+        Group group = new Group();
+        copy(group, source);
         return group;
     }
 
@@ -68,7 +101,7 @@ public abstract class TestUtils {
 
     public static City createCity() {
         City city = new City();
-        city.setId(1L);
+        city.setId(newCityId());
         city.setAddress("address");
         return city;
     }
@@ -79,6 +112,10 @@ public abstract class TestUtils {
 
     private static long newGroupId() {
         return ID_GROUP++;
+    }
+
+    private static long newCityId() {
+        return CITY_ID++;
     }
 
 }
