@@ -1,9 +1,12 @@
 package com.sess.core.groups;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.sess.core.roles.Role;
+import com.sess.core.users.User;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user_of_groups")
@@ -12,11 +15,21 @@ public class UserOfGroup {
     @Id
     private Long id;
 
-    @Column(name = "group_id", nullable = false)
-    private Long groupId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", updatable = false, insertable = false)
+    private User user;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "group_id", updatable = false, insertable = false)
+    private Group group;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "roles_users",
+            joinColumns = { @JoinColumn(name = "user_of_group_id") },
+            inverseJoinColumns = { @JoinColumn(name = "role_id") }
+    )
+    private List<Role> roles = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -26,19 +39,39 @@ public class UserOfGroup {
         this.id = id;
     }
 
-    public Long getGroupId() {
-        return groupId;
+    public User getUser() {
+        return user;
     }
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Group getGroup() {
+        return group;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setGroup(Group group) {
+        this.group = group;
     }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
+    }
+
+    public void removeRole(long roleId) {
+        roles.stream()
+                .filter(r -> Objects.equals(r.getId(), roleId))
+                .findFirst()
+                .ifPresent(r -> roles.remove(r));
+    }
+
 }

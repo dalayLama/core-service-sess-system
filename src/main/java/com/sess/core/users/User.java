@@ -1,6 +1,8 @@
 package com.sess.core.users;
 
 import com.sess.core.groups.Group;
+import com.sess.core.groups.UserOfGroup;
+import com.sess.core.roles.Role;
 import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
@@ -10,10 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -68,6 +67,9 @@ public class User {
             inverseJoinColumns = { @JoinColumn(name = "group_id") }
     )
     private List<Group> groups = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UserOfGroup> userOfGroups = new ArrayList<>();
 
     public User() {
     }
@@ -136,6 +138,28 @@ public class User {
         this.groups = groups;
     }
 
+    public List<UserOfGroup> getUserOfGroups() {
+        return userOfGroups;
+    }
+
+    public void setUserOfGroups(List<UserOfGroup> userOfGroups) {
+        this.userOfGroups = userOfGroups;
+    }
+
+    public List<Role> getRoles(long groupId) {
+        return getUserOfGroup(groupId)
+                .map(UserOfGroup::getRoles)
+                .orElse(Collections.emptyList());
+    }
+
+    public void addRole(long groupId, Role role) {
+       getUserOfGroup(groupId).ifPresent(ug -> ug.addRole(role));
+    }
+
+    public void removeRole(long groupId, long roleId) {
+        getUserOfGroup(groupId).ifPresent(ug -> ug.removeRole(roleId));
+    }
+
     public void addGroup(Group group) {
         groups.add(group);
     }
@@ -145,6 +169,12 @@ public class User {
                 .filter(g -> Objects.equals(g.getId(), idGroup))
                 .findFirst()
                 .ifPresent(g -> groups.remove(g));
+    }
+
+    public Optional<UserOfGroup> getUserOfGroup(long groupId) {
+        return userOfGroups.stream()
+                .filter(ug -> Objects.equals(ug.getGroup().getId(), groupId))
+                .findFirst();
     }
 
 }
