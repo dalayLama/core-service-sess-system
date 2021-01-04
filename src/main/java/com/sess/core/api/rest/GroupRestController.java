@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/groups")
@@ -39,6 +40,26 @@ public class GroupRestController {
     @GetMapping("/{groupId}/users")
     public ResponseEntity<List<DTOUser>> getUsersByGroup(@PathVariable(value = "groupId") long groupId) {
         return new ResponseEntity<>(apiHandler.getUsersByGroup(groupId), HttpStatus.OK);
+    }
+
+    @PostMapping("/{groupId}/users/{userId}/roles")
+    public ResponseEntity<Void> addRoles(
+            @PathVariable(value = "groupId") long groupId,
+            @PathVariable(value = "userId") long userId,
+            @RequestBody Set<Long> rolesIds
+    ) {
+        apiHandler.addRoles(groupId, userId, rolesIds);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{groupId}/users/{userId}/roles")
+    public ResponseEntity<Void> removeRoles(
+            @PathVariable(value = "groupId") long groupId,
+            @PathVariable(value = "userId") long userId,
+            @RequestBody Set<Long> rolesIds
+    ) {
+        apiHandler.removeRoles(groupId, userId, rolesIds);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

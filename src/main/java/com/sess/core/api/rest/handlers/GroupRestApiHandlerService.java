@@ -12,13 +12,16 @@ import com.sess.core.exceptions.*;
 import com.sess.core.groups.Group;
 import com.sess.core.groups.GroupService;
 import com.sess.core.groups.exceptions.GroupNotFoundException;
+import com.sess.core.roles.RoleService;
 import com.sess.core.users.User;
+import com.sess.core.users.exceptions.UserNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,15 +35,18 @@ public class GroupRestApiHandlerService implements GroupRestApiHandler {
 
     private final MessageService messageService;
 
+    private final RoleService roleService;
+
     public GroupRestApiHandlerService(
             GroupService groupService,
             DTOAdapterGroup groupAdapter,
             UserDTOAdapter userAdapter,
-            MessageService messageService) {
+            MessageService messageService, RoleService roleService) {
         this.groupService = groupService;
         this.groupAdapter = groupAdapter;
         this.userAdapter = userAdapter;
         this.messageService = messageService;
+        this.roleService = roleService;
     }
 
     @Override
@@ -99,5 +105,27 @@ public class GroupRestApiHandlerService implements GroupRestApiHandler {
         return users.stream()
                 .map(userAdapter::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addRoles(long groupId, long userId, Set<Long> rolesIds) {
+        try {
+            roleService.addRoles(groupId, userId, rolesIds);
+        } catch (GroupNotFoundException | UserNotFoundException e) {
+            throw new HttpStatusOperationException(e.getError(), HttpStatus.BAD_REQUEST);
+        } catch (SaveException e) {
+            throw new HttpStatusOperationException(e.getError(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public void removeRoles(long groupId, long userId, Set<Long> rolesIds) {
+        try {
+            roleService.removeRoles(groupId, userId, rolesIds);
+        } catch (GroupNotFoundException | UserNotFoundException e) {
+            throw new HttpStatusOperationException(e.getError(), HttpStatus.BAD_REQUEST);
+        } catch (SaveException e) {
+            throw new HttpStatusOperationException(e.getError(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }

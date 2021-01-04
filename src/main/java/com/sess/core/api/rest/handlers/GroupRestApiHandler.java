@@ -5,6 +5,7 @@ import com.sess.core.dto.DTOUser;
 import com.sess.core.dto.GroupDTO;
 
 import java.util.List;
+import java.util.Set;
 
 public interface GroupRestApiHandler {
 
@@ -17,5 +18,9 @@ public interface GroupRestApiHandler {
     List<GroupDTO> getGroupsByCity(long cityId);
 
     List<DTOUser> getUsersByGroup(long groupId);
+
+    void addRoles(long groupId, long userId, Set<Long> rolesIds);
+
+    void removeRoles(long groupId, long userId, Set<Long> rolesIds);
 
 }
