@@ -8,9 +8,11 @@ import com.sess.core.dto.adapters.exceptions.ConvertToDTOException;
 import com.sess.core.groups.Group;
 import com.sess.core.users.City;
 import com.sess.core.users.User;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+@Component
 public class DTOAdapterGroupImpl implements DTOAdapterGroup {
 
     private final CityDTOAdapter cityAdapter;
