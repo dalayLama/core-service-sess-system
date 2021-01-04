@@ -11,6 +11,8 @@ public interface JpaGroupRepository extends JpaRepository<Group, Long> {
 
     List<Group> findAllByDeletedFalse();
 
+    List<Group> findAllByCityIdAndDeletedFalse(long cityId);
+
     Optional<Group> findByTitleAndDeletedFalse(String title);
 
     @Query("select g from Group g where g.id <> ?1 and g.title = ?2 and g.deleted = false")

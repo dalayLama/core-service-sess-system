@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -122,6 +123,18 @@ public class JpaGroupService implements GroupService {
                             groupRepository.save(group);
                         })
         );
+    }
+
+    @Override
+    @Transactional
+    public List<Group> getAllByCity(long cityId) {
+        return groupRepository.findAllByCityIdAndDeletedFalse(cityId);
+    }
+
+    @Override
+    @Transactional
+    public Optional<Group> findById(long groupId) {
+        return groupRepository.findById(groupId);
     }
 
     private void updateGroup(Group target, Group source) {
