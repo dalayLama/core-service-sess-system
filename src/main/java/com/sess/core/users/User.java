@@ -1,5 +1,6 @@
 package com.sess.core.users;
 
+import com.sess.core.cities.City;
 import com.sess.core.groups.Group;
 import com.sess.core.groups.UserOfGroup;
 import com.sess.core.roles.Role;

@@ -1,4 +1,4 @@
-package com.sess.core.users;
+package com.sess.core.cities;
 
 import javax.persistence.*;
 

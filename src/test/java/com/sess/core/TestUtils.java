@@ -5,7 +5,7 @@ import com.sess.core.dto.DTOUser;
 import com.sess.core.groups.Group;
 import com.sess.core.groups.UserOfGroup;
 import com.sess.core.roles.Role;
-import com.sess.core.users.City;
+import com.sess.core.cities.City;
 import com.sess.core.users.Sex;
 import com.sess.core.users.User;
 

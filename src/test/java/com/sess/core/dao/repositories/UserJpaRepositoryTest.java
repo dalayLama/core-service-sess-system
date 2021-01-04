@@ -3,7 +3,7 @@ package com.sess.core.dao.repositories;
 import com.sess.core.TestUtils;
 import com.sess.core.groups.Group;
 import com.sess.core.roles.Role;
-import com.sess.core.users.City;
+import com.sess.core.cities.City;
 import com.sess.core.users.Sex;
 import com.sess.core.users.User;
 import org.junit.jupiter.api.Disabled;

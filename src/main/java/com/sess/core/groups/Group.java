@@ -1,6 +1,6 @@
 package com.sess.core.groups;
 
-import com.sess.core.users.City;
+import com.sess.core.cities.City;
 import com.sess.core.users.User;
 
 import javax.persistence.*;

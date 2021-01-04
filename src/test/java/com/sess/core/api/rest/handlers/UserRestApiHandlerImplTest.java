@@ -14,7 +14,7 @@ import com.sess.core.dto.adapters.exceptions.ConvertFromDTOException;
 import com.sess.core.dto.adapters.exceptions.ConvertToDTOException;
 import com.sess.core.exceptions.ErrorBuilder;
 import com.sess.core.exceptions.ErrorMessage;
-import com.sess.core.users.City;
+import com.sess.core.cities.City;
 import com.sess.core.users.User;
 import com.sess.core.users.registration.UserService;
 import com.sess.core.exceptions.SaveException;

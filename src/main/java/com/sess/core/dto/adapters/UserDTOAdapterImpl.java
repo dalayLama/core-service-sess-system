@@ -4,7 +4,7 @@ import com.sess.core.dto.DTOCity;
 import com.sess.core.dto.DTOUser;
 import com.sess.core.dto.adapters.exceptions.ConvertFromDTOException;
 import com.sess.core.dto.adapters.exceptions.ConvertToDTOException;
-import com.sess.core.users.City;
+import com.sess.core.cities.City;
 import com.sess.core.users.User;
 import org.springframework.stereotype.Component;
 

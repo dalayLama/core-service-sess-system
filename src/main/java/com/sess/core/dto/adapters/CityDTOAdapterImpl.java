@@ -3,7 +3,7 @@ package com.sess.core.dto.adapters;
 import com.sess.core.dto.DTOCity;
 import com.sess.core.dto.adapters.exceptions.ConvertFromDTOException;
 import com.sess.core.dto.adapters.exceptions.ConvertToDTOException;
-import com.sess.core.users.City;
+import com.sess.core.cities.City;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
