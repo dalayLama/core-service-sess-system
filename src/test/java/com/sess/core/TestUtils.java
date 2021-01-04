@@ -3,6 +3,8 @@ package com.sess.core;
 import com.sess.core.dto.DTOCity;
 import com.sess.core.dto.DTOUser;
 import com.sess.core.groups.Group;
+import com.sess.core.groups.UserOfGroup;
+import com.sess.core.roles.Role;
 import com.sess.core.users.City;
 import com.sess.core.users.Sex;
 import com.sess.core.users.User;
@@ -19,7 +21,20 @@ public abstract class TestUtils {
 
     private static long CITY_ID = 1;
 
+    private static long ROLE_ID = 1;
+
+    private static long USER_OF_GROUP_ID = 1;
+
     private TestUtils() {}
+
+    public static Role createRole() {
+        Role role = new Role();
+        role.setId(newRoleId());
+        role.setName(String.format("name%d", role.getId()));
+        role.setDescription(String.format("description%d", role.getId()));
+        role.setCaption(String.format("caption%d", role.getId()));
+        return role;
+    }
 
     public static Group createNewGroup(User creator) {
         Group group = createGroup(creator);
@@ -41,7 +56,14 @@ public abstract class TestUtils {
     public static Group createGroupWithUsers(User creator, Collection<? extends User> users) {
         Group group = createGroup(creator);
         group.addUsers(users);
-        users.forEach(u -> u.addGroup(group));
+        users.forEach(u -> {
+            u.addGroup(group);
+            UserOfGroup userOfGroup = new UserOfGroup();
+            userOfGroup.setId(newUserOfGroupId());
+            userOfGroup.setGroup(group);
+            userOfGroup.setUser(u);
+            u.getUserOfGroups().add(userOfGroup);
+        });
         return group;
     }
 
@@ -116,6 +138,14 @@ public abstract class TestUtils {
 
     private static long newCityId() {
         return CITY_ID++;
+    }
+
+    private static long newRoleId() {
+        return ROLE_ID++;
+    }
+
+    private static long newUserOfGroupId() {
+        return USER_OF_GROUP_ID++;
     }
 
 }
