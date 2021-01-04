@@ -25,4 +25,6 @@ public interface ErrorsCodes {
     String USER_ALREADY_EXIST_IN_GROUP = "";
 
     String GROUP_TITLE_ALREADY_EXISTS = "";
+
+    String USER_NOT_FOUND_IN_GROUP = "";
 }

@@ -68,7 +68,10 @@ public class InMemoryMessageService implements MessageService {
                         Map.of(Locale.RU, "Пользователь с идентификатором {} уже существует в группе {}")),
                 MessageId.GROUP_TITLE_ALREADY_EXISTS,
                 new Message(ErrorsCodes.GROUP_TITLE_ALREADY_EXISTS,
-                        Map.of(Locale.RU, "Группа с таким названием уже существует"))
+                        Map.of(Locale.RU, "Группа с таким названием уже существует")),
+                MessageId.USER_NOT_FOUND_IN_GROUP,
+                new Message(ErrorsCodes.USER_NOT_FOUND_IN_GROUP,
+                        Map.of(Locale.RU, "Пользователь с идентификатором {} отсутствует в группе {}"))
         ));
     }
 
