@@ -6,6 +6,7 @@ import com.sess.core.components.validator.Validator;
 import com.sess.core.dao.repositories.JpaGroupRepository;
 import com.sess.core.dao.repositories.UserOfGroupJpaRepository;
 import com.sess.core.groups.exceptions.GroupNotFoundException;
+import com.sess.core.roles.RoleService;
 import com.sess.core.users.exceptions.UserNotFoundException;
 import com.sess.core.exceptions.*;
 import com.sess.core.groups.exceptions.UserAlreadyExistInGroup;
@@ -35,17 +36,21 @@ public class JpaGroupService implements GroupService {
 
     private final Validator validator;
 
+    private final RoleService roleService;
+
     public JpaGroupService(
             JpaGroupRepository groupRepository,
             MessageService messageService,
             UserService userService,
             UserOfGroupJpaRepository userOfGroupRepository,
-            Validator validator) {
+            Validator validator,
+            RoleService roleService) {
         this.groupRepository = groupRepository;
         this.messageService = messageService;
         this.userService = userService;
         this.userOfGroupRepository = userOfGroupRepository;
         this.validator = validator;
+        this.roleService = roleService;
     }
 
     @Override
@@ -56,7 +61,10 @@ public class JpaGroupService implements GroupService {
             throw new NotNullableId(errorMessage);
         }
         validate(group);
-        return groupRepository.save(group);
+        Group savedGroup = groupRepository.saveAndFlush(group);
+        addUserInGroup(savedGroup, savedGroup.getCreator().getId());
+        roleService.addRoles(savedGroup.getId(), savedGroup.getCreator().getId(), roleService.getAllRoles());
+        return savedGroup;
     }
 
     @Override
@@ -148,7 +156,7 @@ public class JpaGroupService implements GroupService {
                 user -> {
                     group.addUser(user);
                     user.addGroup(group);
-                    groupRepository.save(group);
+                    groupRepository.saveAndFlush(group);
                 },
                 () -> {
                     ErrorMessage errorMessage = messageService.sayError(MessageId.USER_NOT_FOUND, userId);

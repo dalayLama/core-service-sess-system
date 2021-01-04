@@ -6,8 +6,13 @@ import com.sess.core.components.message.MessageId;
 import com.sess.core.components.message.MessageService;
 import com.sess.core.components.validator.Validator;
 import com.sess.core.dao.repositories.JpaGroupRepository;
+import com.sess.core.dao.repositories.RoleJpaRepository;
+import com.sess.core.dao.repositories.UserJpaRepository;
 import com.sess.core.dao.repositories.UserOfGroupJpaRepository;
 import com.sess.core.groups.exceptions.GroupNotFoundException;
+import com.sess.core.roles.Role;
+import com.sess.core.roles.RoleService;
+import com.sess.core.roles.RoleServiceJpa;
 import com.sess.core.users.exceptions.UserNotFoundException;
 import com.sess.core.exceptions.*;
 import com.sess.core.groups.exceptions.UserAlreadyExistInGroup;
@@ -29,23 +34,42 @@ import static org.mockito.Mockito.*;
 class JpaGroupServiceTest {
 
     @Test
-    public void shouldExecuteMethodsInExpectedOrder() {
+    public void shouldCreateGroupAddUserAndAddRole() {
         JpaGroupRepository groupRepository = mock(JpaGroupRepository.class);
         MessageService messageService = mock(MessageService.class);
         UserService userService = mock(UserService.class);
         UserOfGroupJpaRepository userOfGroupJpaRepository = mock(UserOfGroupJpaRepository.class);
         Validator validator = mock(Validator.class);
-        Group newGroup = TestUtils.createNewGroup(TestUtils.createUser());
+        RoleJpaRepository roleRepository = mock(RoleJpaRepository.class);
+        UserJpaRepository userRepository = mock(UserJpaRepository.class);
+        RoleService roleService = spy(new RoleServiceJpa(roleRepository, userRepository, groupRepository, messageService));
+        List<Role> allRoles = List.of(
+                TestUtils.createRole(),
+                TestUtils.createRole(),
+                TestUtils.createRole()
+        );
+        User creator = TestUtils.createUser();
+        Group newGroup = TestUtils.createNewGroup(creator);
+        Group createdGroup = TestUtils.createGroup(newGroup.getCreator());
+        UserOfGroup userOfGroup = new UserOfGroup();
+        userOfGroup.setUser(creator);
+        userOfGroup.setGroup(createdGroup);
+        creator.getUserOfGroups().add(userOfGroup);
 
         when(groupRepository.findByTitleAndDeletedFalse(newGroup.getTitle())).thenReturn(Optional.empty());
-        when(groupRepository.save(newGroup)).thenReturn(TestUtils.createGroup(newGroup.getCreator()));
+        when(groupRepository.saveAndFlush(newGroup)).thenReturn(createdGroup);
+        when(roleService.getAllRoles()).thenReturn(allRoles);
+        when(groupRepository.findById(createdGroup.getId())).thenReturn(Optional.of(createdGroup));
+        when(userService.findById(creator.getId())).thenReturn(Optional.of(creator));
 
         JpaGroupService groupService = new JpaGroupService(
-                groupRepository, messageService, userService, userOfGroupJpaRepository, validator);
+                groupRepository, messageService, userService, userOfGroupJpaRepository, validator, roleService);
 
         Group group = groupService.createGroup(newGroup);
         assertThat(group.getId()).isNotNull();
         verify(validator).validate(newGroup);
+        assertThat(group.getUsers()).containsExactly(creator);
+        assertThat(creator.getRoles(group.getId())).containsExactlyInAnyOrderElementsOf(allRoles);
     }
 
     @Test
@@ -55,6 +79,7 @@ class JpaGroupServiceTest {
         UserService userService = mock(UserService.class);
         UserOfGroupJpaRepository userOfGroupJpaRepository = mock(UserOfGroupJpaRepository.class);
         Validator validator = mock(Validator.class);
+        RoleService roleService = mock(RoleService.class);
         Group group = new Group();
         group.setId(1L);
 
@@ -65,7 +90,7 @@ class JpaGroupServiceTest {
                 .thenReturn(expectedMessages.get(0));
 
         JpaGroupService groupService = new JpaGroupService(
-                groupRepository, messageService, userService, userOfGroupJpaRepository, validator);
+                groupRepository, messageService, userService, userOfGroupJpaRepository, validator, roleService);
 
         NotNullableId thrown = assertThrows(
                 NotNullableId.class,
@@ -87,6 +112,7 @@ class JpaGroupServiceTest {
         UserService userService = mock(UserService.class);
         UserOfGroupJpaRepository userOfGroupJpaRepository = mock(UserOfGroupJpaRepository.class);
         Validator validator = mock(Validator.class);
+        RoleService roleService = mock(RoleService.class);
         Group group = TestUtils.createNewGroup(TestUtils.createUser());
 
         List<ErrorMessage> expectedMessages = List.of(
@@ -109,7 +135,7 @@ class JpaGroupServiceTest {
 
 
         JpaGroupService groupService = new JpaGroupService(
-                groupRepository, messageService, userService, userOfGroupJpaRepository, validator);
+                groupRepository, messageService, userService, userOfGroupJpaRepository, validator, roleService);
 
         ValidationException thrown = assertThrows(
                 ValidationException.class,
@@ -129,6 +155,7 @@ class JpaGroupServiceTest {
         UserService userService = mock(UserService.class);
         UserOfGroupJpaRepository userOfGroupJpaRepository = mock(UserOfGroupJpaRepository.class);
         Validator validator = mock(Validator.class);
+        RoleService roleService = mock(RoleService.class);
         List<User> usersOfGroup = List.of(
                 TestUtils.createUser(),
                 TestUtils.createUser(),
@@ -142,7 +169,7 @@ class JpaGroupServiceTest {
         when(groupRepository.findById(group.getId())).thenReturn(Optional.of(group));
 
         JpaGroupService groupService = new JpaGroupService(
-                groupRepository, messageService, userService, userOfGroupJpaRepository, validator);
+                groupRepository, messageService, userService, userOfGroupJpaRepository, validator, roleService);
         groupService.deleteGroup(group.getId());
 
         assertThat(group.isDeleted()).isTrue();
@@ -161,6 +188,7 @@ class JpaGroupServiceTest {
         UserService userService = mock(UserService.class);
         UserOfGroupJpaRepository userOfGroupJpaRepository = mock(UserOfGroupJpaRepository.class);
         Validator validator = mock(Validator.class);
+        RoleService roleService = mock(RoleService.class);
         long groupId = 88L;
         List<ErrorMessage> expectedMessages = List.of(
                 new ErrorMessage("1", "message 1")
@@ -172,7 +200,7 @@ class JpaGroupServiceTest {
                 .thenReturn(expectedMessages.get(0));
 
         JpaGroupService groupService = new JpaGroupService(
-                groupRepository, messageService, userService, userOfGroupJpaRepository, validator);
+                groupRepository, messageService, userService, userOfGroupJpaRepository, validator, roleService);
         groupService.deleteGroup(groupId);
 
         groupService.deleteGroup(groupId);
@@ -186,6 +214,7 @@ class JpaGroupServiceTest {
         UserService userService = mock(UserService.class);
         UserOfGroupJpaRepository userOfGroupJpaRepository = mock(UserOfGroupJpaRepository.class);
         Validator validator = mock(Validator.class);
+        RoleService roleService = mock(RoleService.class);
         Group oldData = TestUtils.createGroup(TestUtils.createUser());
         Group newData = TestUtils.createCopy(oldData);
         newData.setDescription("big new text");
@@ -196,7 +225,7 @@ class JpaGroupServiceTest {
                 .thenReturn(Optional.of(oldData));
 
         JpaGroupService groupService = new JpaGroupService(
-                groupRepository, messageService, userService, userOfGroupJpaRepository, validator);
+                groupRepository, messageService, userService, userOfGroupJpaRepository, validator, roleService);
         groupService.updateGroup(newData);
 
         verify(validator).validate(oldData);
@@ -214,6 +243,7 @@ class JpaGroupServiceTest {
         UserService userService = mock(UserService.class);
         UserOfGroupJpaRepository userOfGroupJpaRepository = mock(UserOfGroupJpaRepository.class);
         Validator validator = mock(Validator.class);
+        RoleService roleService = mock(RoleService.class);
         Group group = TestUtils.createGroup(TestUtils.createUser());
 
         List<ErrorMessage> expectedMessages = List.of(
@@ -226,7 +256,7 @@ class JpaGroupServiceTest {
         );
 
         JpaGroupService groupService = new JpaGroupService(
-                groupRepository, messageService, userService, userOfGroupJpaRepository, validator);
+                groupRepository, messageService, userService, userOfGroupJpaRepository, validator, roleService);
 
         UpdateException thrown = assertThrows(
                 UpdateException.class,
@@ -248,6 +278,7 @@ class JpaGroupServiceTest {
         UserService userService = mock(UserService.class);
         UserOfGroupJpaRepository userOfGroupJpaRepository = mock(UserOfGroupJpaRepository.class);
         Validator validator = mock(Validator.class);
+        RoleService roleService = mock(RoleService.class);
         Group group = TestUtils.createGroup(TestUtils.createUser());
         User user = TestUtils.createUser();
 
@@ -262,7 +293,7 @@ class JpaGroupServiceTest {
         );
 
         JpaGroupService groupService = new JpaGroupService(
-                groupRepository, messageService, userService, userOfGroupJpaRepository, validator);
+                groupRepository, messageService, userService, userOfGroupJpaRepository, validator, roleService);
 
         UserAlreadyExistInGroup thrown = assertThrows(
                 UserAlreadyExistInGroup.class,
@@ -282,6 +313,7 @@ class JpaGroupServiceTest {
         UserService userService = mock(UserService.class);
         UserOfGroupJpaRepository userOfGroupJpaRepository = mock(UserOfGroupJpaRepository.class);
         Validator validator = mock(Validator.class);
+        RoleService roleService = mock(RoleService.class);
         Group group = TestUtils.createGroup(TestUtils.createUser());
         User user = TestUtils.createUser();
 
@@ -289,11 +321,11 @@ class JpaGroupServiceTest {
         when(userService.findById(user.getId())).thenReturn(Optional.of(user));
 
         JpaGroupService groupService = new JpaGroupService(
-                groupRepository, messageService, userService, userOfGroupJpaRepository, validator);
+                groupRepository, messageService, userService, userOfGroupJpaRepository, validator, roleService);
 
         groupService.addUserInGroup(group.getId(), user.getId());
 
-        verify(groupRepository).save(group);
+        verify(groupRepository).saveAndFlush(group);
         verify(userOfGroupJpaRepository).existsByGroupIdAndUserId(group.getId(), user.getId());
         verify(validator, never()).validate(any());
         List<Long> usersIdsInGroup = group.getUsers().stream().map(User::getId).collect(Collectors.toList());
@@ -310,6 +342,7 @@ class JpaGroupServiceTest {
         UserService userService = mock(UserService.class);
         UserOfGroupJpaRepository userOfGroupJpaRepository = mock(UserOfGroupJpaRepository.class);
         Validator validator = mock(Validator.class);
+        RoleService roleService = mock(RoleService.class);
         Group group = TestUtils.createGroup(TestUtils.createUser());
         long userId = 133L;
 
@@ -323,7 +356,7 @@ class JpaGroupServiceTest {
         when(messageService.sayError(USER_NOT_FOUND, userId)).thenReturn(expectedMessages.get(0));
 
         JpaGroupService groupService = new JpaGroupService(
-                groupRepository, messageService, userService, userOfGroupJpaRepository, validator);
+                groupRepository, messageService, userService, userOfGroupJpaRepository, validator, roleService);
 
         SaveException thrown = assertThrows(
                 SaveException.class,
@@ -344,6 +377,7 @@ class JpaGroupServiceTest {
         UserService userService = mock(UserService.class);
         UserOfGroupJpaRepository userOfGroupJpaRepository = mock(UserOfGroupJpaRepository.class);
         Validator validator = mock(Validator.class);
+        RoleService roleService = mock(RoleService.class);
         List<User> users = List.of(
                 TestUtils.createUser(),
                 TestUtils.createUser(),
@@ -360,7 +394,7 @@ class JpaGroupServiceTest {
 
 
         JpaGroupService groupService = new JpaGroupService(
-                groupRepository, messageService, userService, userOfGroupJpaRepository, validator);
+                groupRepository, messageService, userService, userOfGroupJpaRepository, validator, roleService);
 
         groupService.deleteUserFromGroup(group1.getId(), users.get(0).getId());
 
