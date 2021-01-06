@@ -23,5 +23,5 @@ create table events
     planned_dt_end timestamp not null,
     description text,
     factual_dt_start timestamp,
-    factual_dt_ent timestamp
+    factual_dt_end timestamp
 );
