@@ -3,6 +3,8 @@ package com.sess.core.running;
 import com.sess.core.groups.Group;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "running_types")
@@ -22,9 +24,11 @@ public class RunningType {
 
     @ManyToOne
     @JoinColumn(name = "group_id", nullable = false, updatable = false)
+    @NotNull(message = "Не указан группа")
     private Group group;
 
     @Column(name = "caption", length = 100, nullable = false)
+    @NotBlank(message = "Не заполнено поле \"наименование\"")
     private String caption;
 
     @Column(name = "deleted")
