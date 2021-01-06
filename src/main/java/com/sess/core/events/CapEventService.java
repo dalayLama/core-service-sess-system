@@ -22,7 +22,7 @@ public class CapEventService implements EventService {
     }
 
     @Override
-    public List<Event> getGroupEvents(long groupId) throws GroupNotFoundException {
+    public List<Event> getAllEvents(long groupId) throws GroupNotFoundException {
         return new ArrayList<>(eventsContainer);
     }
 

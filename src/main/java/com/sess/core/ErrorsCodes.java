@@ -30,4 +30,7 @@ public interface ErrorsCodes {
     String NOT_NULLABLE_RUNNING_TYPE_ID = "";
     String RUNNING_TYPE_CAPTION_ALREADY_EXISTS_IN_GROUP = "";
     String RUNNING_TYPE_NOT_FOUND = "";
+    String NOT_NULLABLE_EVENT_ID = "";
+    String DURING_CREATE_FACTUAL_DATES_MUST_BE_NULL = "";
+    String EVENT_CAN_NOT_BE_CHANGED = "";
 }

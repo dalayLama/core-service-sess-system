@@ -80,7 +80,16 @@ public class InMemoryMessageService implements MessageService {
                         Map.of(Locale.RU, "Наименование типа забега({}) уже существует в группе ({})")),
                 MessageId.RUNNING_TYPE_NOT_FOUND,
                 new Message(ErrorsCodes.RUNNING_TYPE_NOT_FOUND,
-                        Map.of(Locale.RU, "Не удалось найти тип забега с идентификатором {}"))
+                        Map.of(Locale.RU, "Не удалось найти тип забега с идентификатором {}")),
+                MessageId.NOT_NULLABLE_EVENT_ID,
+                new Message(ErrorsCodes.NOT_NULLABLE_EVENT_ID,
+                        Map.of(Locale.RU, "У нового события должен быть пустой идентификатор")),
+                MessageId.DURING_CREATE_FACTUAL_DATES_MUST_BE_NULL,
+                new Message(ErrorsCodes.DURING_CREATE_FACTUAL_DATES_MUST_BE_NULL,
+                        Map.of(Locale.RU, "При создании события, фактические даты не должны быть указаны")),
+                MessageId.EVENT_CAN_NOT_BE_CHANGED,
+                new Message(ErrorsCodes.EVENT_CAN_NOT_BE_CHANGED,
+                        Map.of(Locale.RU, "Событие ({}) не может быть изменено"))
         ));
     }
 
