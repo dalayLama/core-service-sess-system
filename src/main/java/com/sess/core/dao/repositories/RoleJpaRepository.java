@@ -1,7 +1,8 @@
 package com.sess.core.dao.repositories;
 
-import com.sess.core.cities.City;
+import com.sess.core.roles.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CityJpaRepository extends JpaRepository<City, Long> {
+public interface RoleJpaRepository extends JpaRepository<Role, Long> {
+
 }

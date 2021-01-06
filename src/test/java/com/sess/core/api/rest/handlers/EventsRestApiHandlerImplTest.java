@@ -9,9 +9,7 @@ import com.sess.core.dto.adapters.DTOOnlyDataEventAdapterImpl;
 import com.sess.core.dto.adapters.exceptions.ConvertToDTOException;
 import com.sess.core.events.CapEventService;
 import com.sess.core.events.Event;
-import com.sess.core.events.exceptions.UserNotFoundException;
-import com.sess.core.exceptions.Error;
-import com.sess.core.exceptions.ErrorBuilder;
+import com.sess.core.users.exceptions.UserNotFoundException;
 import com.sess.core.exceptions.ErrorMessage;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -44,14 +42,14 @@ class EventsRestApiHandlerImplTest {
     @Test
     public void shouldUserNotFoundException() {
         final long userId = 1L;
-        Error error = ErrorBuilder.newBuilder(false)
-                .addMessage("1", "message 1")
-                .build();
+        List<ErrorMessage> errorMessages = List.of(
+                new ErrorMessage("1", "message 1")
+        );
         CapEventService eventService = spy(getCapEventService());
         DTOOnlyDataEventAdapter adapter = spy(new DTOOnlyDataEventAdapterImpl());
         MessageService messageService = mock(MessageService.class);
         when(eventService.getUserEvents(userId))
-                .thenThrow(new UserNotFoundException(error));
+                .thenThrow(new UserNotFoundException(errorMessages.get(0)));
 
         EventsRestApiHandlerImpl handler = new EventsRestApiHandlerImpl(eventService, adapter, messageService);
 
@@ -63,7 +61,7 @@ class EventsRestApiHandlerImplTest {
         assertThat(thrown.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(thrown.getError().isResultOperation()).isFalse();
         assertThat(new ArrayList<ErrorMessage>(thrown.getError().getMessages()))
-                .containsExactlyInAnyOrderElementsOf(error.getMessages());
+                .containsExactlyInAnyOrderElementsOf(errorMessages);
         verify(adapter, never()).convertToDTO(any());
     }
 

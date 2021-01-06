@@ -14,11 +14,11 @@ import com.sess.core.dto.adapters.exceptions.ConvertFromDTOException;
 import com.sess.core.dto.adapters.exceptions.ConvertToDTOException;
 import com.sess.core.exceptions.ErrorBuilder;
 import com.sess.core.exceptions.ErrorMessage;
-import com.sess.core.users.City;
+import com.sess.core.cities.City;
 import com.sess.core.users.User;
-import com.sess.core.users.registration.UserRegistrationService;
-import com.sess.core.users.registration.exceptions.RegistrationException;
-import com.sess.core.users.registration.exceptions.ValidationException;
+import com.sess.core.users.registration.UserService;
+import com.sess.core.exceptions.SaveException;
+import com.sess.core.exceptions.ValidationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
@@ -34,12 +34,12 @@ class UserRestApiHandlerImplTest {
 
     @Test
     public void shouldExecuteAllExpectedMethods() {
-        UserRegistrationService registrationService = mock(UserRegistrationService.class);
+        UserService registrationService = mock(UserService.class);
         CityDTOAdapter cityAdapter = spy(new CityDTOAdapterImpl());
         UserDTOAdapter userAdapter = spy(new UserDTOAdapterImpl(cityAdapter));
         MessageService messageService = mock(MessageService.class);
         when(registrationService.register(any(User.class)))
-                .thenReturn(TestUtils.createNewUser());
+                .thenReturn(TestUtils.createUser());
 
         DTOUser dtoUser = TestUtils.createDTOUser(null);
 
@@ -61,7 +61,7 @@ class UserRestApiHandlerImplTest {
         );
         HttpStatus expectedStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         DTOUser dtoUser = TestUtils.createDTOUser(null);
-        UserRegistrationService registrationService = mock(UserRegistrationService.class);
+        UserService registrationService = mock(UserService.class);
         CityDTOAdapter cityAdapter = spy(new CityDTOAdapterImpl());
         UserDTOAdapter userAdapter = spy(new UserDTOAdapterImpl(cityAdapter));
         MessageService messageService = mock(MessageService.class);
@@ -93,7 +93,7 @@ class UserRestApiHandlerImplTest {
         );
         HttpStatus expectedStatus = HttpStatus.CREATED;
         DTOUser dtoUser = TestUtils.createDTOUser(null);
-        UserRegistrationService registrationService = mock(UserRegistrationService.class);
+        UserService registrationService = mock(UserService.class);
         CityDTOAdapter cityAdapter = spy(new CityDTOAdapterImpl());
         UserDTOAdapter userAdapter = spy(new UserDTOAdapterImpl(cityAdapter));
         MessageService messageService = mock(MessageService.class);
@@ -102,7 +102,7 @@ class UserRestApiHandlerImplTest {
         when(messageService.sayError(MessageId.WRITE_DTO_USER_DATA_ERROR))
                 .thenReturn(expectedErrorMessages.get(0));
         when(registrationService.register(any(User.class)))
-                .thenReturn(TestUtils.createNewUser());
+                .thenReturn(TestUtils.createUser());
 
         UserRestApiHandlerImpl userRestApiHandler = new UserRestApiHandlerImpl(registrationService, userAdapter, messageService);
 
@@ -128,7 +128,7 @@ class UserRestApiHandlerImplTest {
         );
         HttpStatus expectedStatus = HttpStatus.BAD_REQUEST;
         DTOUser dtoUser = TestUtils.createDTOUser(null);
-        UserRegistrationService registrationService = mock(UserRegistrationService.class);
+        UserService registrationService = mock(UserService.class);
         CityDTOAdapter cityAdapter = spy(new CityDTOAdapterImpl());
         UserDTOAdapter userAdapter = spy(new UserDTOAdapterImpl(cityAdapter));
         MessageService messageService = mock(MessageService.class);
@@ -159,12 +159,12 @@ class UserRestApiHandlerImplTest {
         );
         HttpStatus expectedStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         DTOUser dtoUser = TestUtils.createDTOUser(null);
-        UserRegistrationService registrationService = mock(UserRegistrationService.class);
+        UserService registrationService = mock(UserService.class);
         CityDTOAdapter cityAdapter = spy(new CityDTOAdapterImpl());
         UserDTOAdapter userAdapter = spy(new UserDTOAdapterImpl(cityAdapter));
         MessageService messageService = mock(MessageService.class);
         when(registrationService.register(any(User.class)))
-                .thenThrow(new RegistrationException(ErrorBuilder.listMessages(false, expectedErrorMessages)));
+                .thenThrow(new SaveException(ErrorBuilder.listMessages(false, expectedErrorMessages)));
 
         UserRestApiHandlerImpl userRestApiHandler = new UserRestApiHandlerImpl(registrationService, userAdapter, messageService);
 

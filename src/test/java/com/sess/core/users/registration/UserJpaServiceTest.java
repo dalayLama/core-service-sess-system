@@ -7,9 +7,9 @@ import com.sess.core.components.validator.Validator;
 import com.sess.core.dao.repositories.UserJpaRepository;
 import com.sess.core.exceptions.ErrorMessage;
 import com.sess.core.users.User;
-import com.sess.core.users.registration.exceptions.NotNullableUserId;
-import com.sess.core.users.registration.exceptions.RegistrationException;
-import com.sess.core.users.registration.exceptions.ValidationException;
+import com.sess.core.exceptions.NotNullableId;
+import com.sess.core.exceptions.SaveException;
+import com.sess.core.exceptions.ValidationException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-class JpaRegistrationServiceTest {
+class UserJpaServiceTest {
 
     @Test
     public void shouldThrowNotNullableUserIdExceptionWhenUserDoesNotHaveId() {
@@ -32,12 +32,12 @@ class JpaRegistrationServiceTest {
         Validator validator = mock(Validator.class);
         when(messageService.sayError(MessageId.NOT_NULLABLE_USER_ID))
                 .thenReturn(expectedErrorMessages.get(0));
-        JpaRegistrationService service = new JpaRegistrationService(repository, messageService, validator);
+        UserJpaService service = new UserJpaService(repository, messageService, validator);
         User user = new User();
         user.setId(2L);
 
-        NotNullableUserId thrown = assertThrows(
-                NotNullableUserId.class,
+        NotNullableId thrown = assertThrows(
+                NotNullableId.class,
                 () -> service.register(user)
         );
 
@@ -61,7 +61,7 @@ class JpaRegistrationServiceTest {
         when(validator.validate(user))
                 .thenReturn(Collections.singleton(expectedErrorMessages.get(0).getMessage()));
 
-        JpaRegistrationService service = new JpaRegistrationService(repository, messageService, validator);
+        UserJpaService service = new UserJpaService(repository, messageService, validator);
         ValidationException thrown = assertThrows(
                 ValidationException.class,
                 () -> service.register(user)
@@ -92,9 +92,9 @@ class JpaRegistrationServiceTest {
         when(repository.save(user))
                 .thenThrow(new RuntimeException("Test exception"));
 
-        JpaRegistrationService service = new JpaRegistrationService(repository, messageService, validator);
-        RegistrationException thrown = assertThrows(
-                RegistrationException.class,
+        UserJpaService service = new UserJpaService(repository, messageService, validator);
+        SaveException thrown = assertThrows(
+                SaveException.class,
                 () -> service.register(user)
         );
 

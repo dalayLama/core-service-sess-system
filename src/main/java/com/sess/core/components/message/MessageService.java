@@ -11,6 +11,8 @@ public interface MessageService {
 
     ErrorMessage sayError(MessageId messageId);
 
+    ErrorMessage sayError(MessageId messageId, Object...params);
+
     String say(Locale locale, MessageId messageId);
 
     ErrorMessage sayError(Locale locale, MessageId messageId);
