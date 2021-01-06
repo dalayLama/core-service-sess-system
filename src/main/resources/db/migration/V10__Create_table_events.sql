@@ -1,21 +1,22 @@
-create table event
+create table events
 (
     id bigserial not null
-        constraint event_pk
+        constraint events_pk
             primary key,
     group_id bigint not null
-        constraint event_groups_id_fk
+        constraint events_groups_id_fk
             references groups
             on update cascade on delete restrict,
-    event_type_id bigint not null
-        constraint event_event_types_id_fk
-            references event_types
+    running_type_id bigint
+        constraint events_running_types_id_fk
+            references running_types
             on update cascade on delete restrict,
     creator_id bigint not null
-        constraint event_users_id_fk
+        constraint events_users_id_fk
             references users
             on update cascade on delete restrict,
     event_name varchar(100),
+    distance numeric(8, 2) not null,
     place_start varchar(255) not null,
     place_end varchar(255) not null,
     planned_dt_start timestamp not null,
