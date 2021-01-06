@@ -27,4 +27,7 @@ public interface ErrorsCodes {
     String GROUP_TITLE_ALREADY_EXISTS = "";
 
     String USER_NOT_FOUND_IN_GROUP = "";
+    String NOT_NULLABLE_RUNNING_TYPE_ID = "";
+    String RUNNING_TYPE_CAPTION_ALREADY_EXISTS_IN_GROUP = "";
+    String RUNNING_TYPE_NOT_FOUND = "";
 }

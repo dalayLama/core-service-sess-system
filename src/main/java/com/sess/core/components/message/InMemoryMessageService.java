@@ -71,7 +71,16 @@ public class InMemoryMessageService implements MessageService {
                         Map.of(Locale.RU, "Группа с таким названием уже существует")),
                 MessageId.USER_NOT_FOUND_IN_GROUP,
                 new Message(ErrorsCodes.USER_NOT_FOUND_IN_GROUP,
-                        Map.of(Locale.RU, "Пользователь с идентификатором {} отсутствует в группе {}"))
+                        Map.of(Locale.RU, "Пользователь с идентификатором {} отсутствует в группе {}")),
+                MessageId.NOT_NULLABLE_RUNNING_TYPE_ID,
+                new Message(ErrorsCodes.NOT_NULLABLE_RUNNING_TYPE_ID,
+                        Map.of(Locale.RU, "У нового типа забега должен быть пустой идентификатор")),
+                MessageId.RUNNING_TYPE_CAPTION_ALREADY_EXISTS_IN_GROUP,
+                new Message(ErrorsCodes.RUNNING_TYPE_CAPTION_ALREADY_EXISTS_IN_GROUP,
+                        Map.of(Locale.RU, "Наименование типа забега({}) уже существует в группе ({})")),
+                MessageId.RUNNING_TYPE_NOT_FOUND,
+                new Message(ErrorsCodes.RUNNING_TYPE_NOT_FOUND,
+                        Map.of(Locale.RU, "Не удалось найти тип забега с идентификатором {}"))
         ));
     }
 
