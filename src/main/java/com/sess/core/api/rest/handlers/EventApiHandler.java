@@ -5,9 +5,9 @@ import com.sess.core.dto.DTOEvent;
 
 import java.util.List;
 
-public interface EventsApiHandler {
+public interface EventApiHandler {
 
-    DTOEvent create(DTOEvent dto) throws HttpStatusOperationException;
+    DTOEvent create(long groupId, DTOEvent dto) throws HttpStatusOperationException;
 
     void update(DTOEvent dto) throws HttpStatusOperationException;
 

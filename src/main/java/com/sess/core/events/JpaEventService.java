@@ -88,7 +88,7 @@ public class JpaEventService implements EventService {
         target.setPlaceStart(source.getPlaceStart());
         target.setPlaceEnd(source.getPlaceEnd());
         target.setPlannedDtStart(source.getPlannedDtStart());
-        target.setPlannedDtEnt(source.getPlannedDtEnt());
+        target.setPlannedDtEnd(source.getPlannedDtEnd());
         validate(target);
         eventRepository.saveAndFlush(target);
     }

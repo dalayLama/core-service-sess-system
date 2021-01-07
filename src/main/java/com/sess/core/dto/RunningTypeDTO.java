@@ -14,8 +14,16 @@ public class RunningTypeDTO {
     @JsonCreator
     public RunningTypeDTO(
             @JsonProperty(value = "id") Long id,
-            @JsonProperty(value = "group") GroupDTO group,
             @JsonProperty(value = "caption") String caption) {
+        this.id = id;
+        this.caption = caption;
+        this.group = null;
+    }
+
+    public RunningTypeDTO(
+            Long id,
+            GroupDTO group,
+            String caption) {
         this.id = id;
         this.group = group;
         this.caption = caption;

@@ -31,7 +31,7 @@ public class Event {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "group_id")
+    @JoinColumn(name = "group_id", nullable = false, updatable = false)
     @NotNull(message = "Не указана группа для события")
     private Group group;
 
@@ -67,7 +67,7 @@ public class Event {
     @Column(name = "planned_dt_end", nullable = false)
     @Convert(converter = Jsr310JpaConverters.LocalDateTimeConverter.class)
     @NotNull(message = "Не указано время окончания события")
-    private LocalDateTime plannedDtEnt;
+    private LocalDateTime plannedDtEnd;
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
@@ -150,12 +150,12 @@ public class Event {
         this.plannedDtStart = plannedDtStart;
     }
 
-    public LocalDateTime getPlannedDtEnt() {
-        return plannedDtEnt;
+    public LocalDateTime getPlannedDtEnd() {
+        return plannedDtEnd;
     }
 
-    public void setPlannedDtEnt(LocalDateTime plannedDtEnt) {
-        this.plannedDtEnt = plannedDtEnt;
+    public void setPlannedDtEnd(LocalDateTime plannedDtEnt) {
+        this.plannedDtEnd = plannedDtEnt;
     }
 
     public String getDescription() {

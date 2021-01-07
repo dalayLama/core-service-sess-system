@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RunningTypeApiHandler {
 
-    RunningTypeDTO create(RunningTypeDTO dto) throws SaveException;
+    RunningTypeDTO create(long groupId, RunningTypeDTO dto) throws SaveException;
 
     void update(RunningTypeDTO dto) throws SaveException;
 

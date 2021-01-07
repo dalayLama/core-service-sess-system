@@ -49,7 +49,7 @@ public class EventDTOAdapterImpl implements EventDTOAdapter {
         event.setPlaceEnd(dtoEvent.getPlaceEnd());
         event.setDistance(dtoEvent.getDistance());
         event.setPlannedDtStart(dtoEvent.getPlannedDtStart());
-        event.setPlaceEnd(dtoEvent.getPlaceEnd());
+        event.setPlannedDtEnd(dtoEvent.getPlannedDtEnd());
         event.setDescription(dtoEvent.getDescription());
         event.setFactualDtStart(dtoEvent.getFactualDtStart());
         event.setFactualDtEnd(dtoEvent.getFactualDtEnd());
@@ -72,7 +72,7 @@ public class EventDTOAdapterImpl implements EventDTOAdapter {
                 event.getPlaceStart(),
                 event.getPlaceEnd(),
                 event.getPlannedDtStart(),
-                event.getPlannedDtEnt(),
+                event.getPlannedDtEnd(),
                 event.getDescription(),
                 event.getFactualDtStart(),
                 event.getFactualDtEnd()

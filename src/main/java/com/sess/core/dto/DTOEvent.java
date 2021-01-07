@@ -36,7 +36,6 @@ public class DTOEvent {
     @JsonCreator
     public DTOEvent(
             @JsonProperty(value = "id") Long id,
-            @JsonProperty(value = "group") GroupDTO group,
             @JsonProperty(value = "creator") DTOUser creator,
             @JsonProperty(value = "runningType") RunningTypeDTO runningType,
             @JsonProperty(value = "eventName") String eventName,
@@ -47,7 +46,6 @@ public class DTOEvent {
             @JsonProperty(value = "plannedDtEnd") LocalDateTime plannedDtEnd,
             @JsonProperty(value = "description") String description) {
         this.id = id;
-        this.group = group;
         this.creator = creator;
         this.runningType = runningType;
         this.eventName = eventName;
@@ -57,6 +55,7 @@ public class DTOEvent {
         this.plannedDtStart = plannedDtStart;
         this.plannedDtEnd = plannedDtEnd;
         this.description = description;
+        this.group = null;
         this.factualDtStart = null;
         this.factualDtEnd = null;
     }
