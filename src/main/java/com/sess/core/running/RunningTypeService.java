@@ -13,6 +13,6 @@ public interface RunningTypeService {
 
     void remove(long id) throws DeleteException;
 
-    List<RunningType> getAllByGroup(long groupId);
+    List<RunningType> getAll(long groupId);
 
 }

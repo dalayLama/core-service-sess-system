@@ -72,7 +72,7 @@ public class JpaRunningTypeService implements RunningTypeService {
     }
 
     @Override
-    public List<RunningType> getAllByGroup(long groupId) {
+    public List<RunningType> getAll(long groupId) {
         return repository.findAllByGroupIdAndDeletedFalse(groupId);
     }
 
