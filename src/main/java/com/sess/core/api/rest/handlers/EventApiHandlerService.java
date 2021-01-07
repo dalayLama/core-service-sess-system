@@ -12,6 +12,7 @@ import com.sess.core.exceptions.ErrorMessage;
 import com.sess.core.exceptions.NotNullableId;
 import com.sess.core.exceptions.OperationAppException;
 import com.sess.core.exceptions.ValidationException;
+import com.sess.core.groups.Group;
 import com.sess.core.groups.GroupService;
 import com.sess.core.groups.exceptions.GroupNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -41,11 +42,12 @@ public class EventApiHandlerService implements EventApiHandler {
     @Override
     public DTOEvent create(long groupId, DTOEvent dto) throws HttpStatusOperationException {
         try {
-            groupService.findById(groupId).orElseThrow(() -> {
+            Group group = groupService.findById(groupId).orElseThrow(() -> {
                 ErrorMessage errMsg = messageService.sayError(MessageId.GROUP_NOT_FOUND, groupId);
                 throw new GroupNotFoundException(errMsg);
             });
             Event event = adapter.convertFromDTO(dto);
+            event.setGroup(group);
             Event savedEvent = eventService.create(event);
             return adapter.convertToDTO(savedEvent);
         } catch (GroupNotFoundException e) {

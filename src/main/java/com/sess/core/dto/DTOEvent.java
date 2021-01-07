@@ -11,8 +11,6 @@ public class DTOEvent {
 
     private final GroupDTO group;
 
-    private final DTOUser creator;
-
     private final RunningTypeDTO runningType;
 
     private final String eventName;
@@ -36,7 +34,6 @@ public class DTOEvent {
     @JsonCreator
     public DTOEvent(
             @JsonProperty(value = "id") Long id,
-            @JsonProperty(value = "creator") DTOUser creator,
             @JsonProperty(value = "runningType") RunningTypeDTO runningType,
             @JsonProperty(value = "eventName") String eventName,
             @JsonProperty(value = "distance") float distance,
@@ -46,7 +43,6 @@ public class DTOEvent {
             @JsonProperty(value = "plannedDtEnd") LocalDateTime plannedDtEnd,
             @JsonProperty(value = "description") String description) {
         this.id = id;
-        this.creator = creator;
         this.runningType = runningType;
         this.eventName = eventName;
         this.distance = distance;
@@ -63,7 +59,6 @@ public class DTOEvent {
     public DTOEvent(
             Long id,
             GroupDTO group,
-            DTOUser creator,
             RunningTypeDTO runningType,
             String eventName,
             float distance,
@@ -76,7 +71,6 @@ public class DTOEvent {
             LocalDateTime factualDtEnd) {
         this.id = id;
         this.group = group;
-        this.creator = creator;
         this.runningType = runningType;
         this.eventName = eventName;
         this.distance = distance;
@@ -95,10 +89,6 @@ public class DTOEvent {
 
     public GroupDTO getGroup() {
         return group;
-    }
-
-    public DTOUser getCreator() {
-        return creator;
     }
 
     public RunningTypeDTO getRunningType() {

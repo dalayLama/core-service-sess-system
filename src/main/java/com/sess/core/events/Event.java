@@ -2,7 +2,6 @@ package com.sess.core.events;
 
 import com.sess.core.groups.Group;
 import com.sess.core.running.RunningType;
-import com.sess.core.users.User;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import javax.persistence.*;
@@ -34,11 +33,6 @@ public class Event {
     @JoinColumn(name = "group_id", nullable = false, updatable = false)
     @NotNull(message = "Не указана группа для события")
     private Group group;
-
-    @ManyToOne
-    @JoinColumn(name = "creator_id")
-    @NotNull(message = "Не указан создатель события")
-    private User creator;
 
     @ManyToOne
     @JoinColumn(name = "running_type_id")
@@ -92,14 +86,6 @@ public class Event {
 
     public void setGroup(Group group) {
         this.group = group;
-    }
-
-    public User getCreator() {
-        return creator;
-    }
-
-    public void setCreator(User creator) {
-        this.creator = creator;
     }
 
     public RunningType getRunningType() {

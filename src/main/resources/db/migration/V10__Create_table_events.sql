@@ -11,10 +11,6 @@ create table events
         constraint events_running_types_id_fk
             references running_types
             on update cascade on delete restrict,
-    creator_id bigint not null
-        constraint events_users_id_fk
-            references users
-            on update cascade on delete restrict,
     event_name varchar(100),
     distance numeric(8, 2) not null,
     place_start varchar(255) not null,
