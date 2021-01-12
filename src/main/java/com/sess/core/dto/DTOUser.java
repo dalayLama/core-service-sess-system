@@ -1,6 +1,7 @@
 package com.sess.core.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sess.core.users.Sex;
 
@@ -40,6 +41,21 @@ public class DTOUser {
         this.securityKey = securityKey;
     }
 
+    public DTOUser(
+            Long id,
+            String nickname,
+            String email,
+            DTOCity city, Sex sex,
+            LocalDateTime birthday) {
+        this.id = id;
+        this.nickname = nickname;
+        this.email = email;
+        this.city = city;
+        this.sex = sex;
+        this.birthday = birthday;
+        this.securityKey = null;
+    }
+
     public Long getId() {
         return id;
     }
@@ -64,6 +80,7 @@ public class DTOUser {
         return birthday;
     }
 
+    @JsonIgnore
     public UUID getSecurityKey() {
         return securityKey;
     }

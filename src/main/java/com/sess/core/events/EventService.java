@@ -1,14 +1,20 @@
 package com.sess.core.events;
 
-import com.sess.core.groups.exceptions.GroupNotFoundException;
-import com.sess.core.users.exceptions.UserNotFoundException;
+import com.sess.core.exceptions.DeleteException;
+import com.sess.core.exceptions.SaveException;
 
 import java.util.List;
 
 public interface EventService {
 
-    List<Event> getUserEvents(long userId) throws UserNotFoundException;
+    Event create(Event event) throws SaveException;
 
-    List<Event> getGroupEvents(long groupId) throws GroupNotFoundException;
+    void update(Event event) throws SaveException;
+
+    void remove(long eventId) throws DeleteException;
+
+    List<Event> getActualEvents(long groupId);
+
+    List<Event> getAllEvents(long groupId);
 
 }

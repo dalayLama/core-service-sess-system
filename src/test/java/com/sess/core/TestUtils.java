@@ -6,6 +6,7 @@ import com.sess.core.groups.Group;
 import com.sess.core.groups.UserOfGroup;
 import com.sess.core.roles.Role;
 import com.sess.core.cities.City;
+import com.sess.core.running.RunningType;
 import com.sess.core.users.Sex;
 import com.sess.core.users.User;
 
@@ -25,7 +26,16 @@ public abstract class TestUtils {
 
     private static long USER_OF_GROUP_ID = 1;
 
+    private static long RUNNING_TYPE_ID = 1;
+
     private TestUtils() {}
+
+    public static RunningType createNewRunningType(Group group) {
+        RunningType rt = new RunningType();
+        rt.setCaption(String.format("title%d", RUNNING_TYPE_ID++));
+        rt.setGroup(group);
+        return rt;
+    }
 
     public static Role createRole() {
         Role role = new Role();
