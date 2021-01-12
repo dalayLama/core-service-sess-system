@@ -41,7 +41,7 @@ public class Event {
     @Column(name = "event_name")
     private String eventName;
 
-    @Column(name = "distance", precision = 8, scale = 2)
+    @Column(name = "distance", precision = 8, scale = 2, columnDefinition = "NUMERIC")
     @Min(value = 1, message = "Дистанция не может быть меньше 1")
     private float distance;
 

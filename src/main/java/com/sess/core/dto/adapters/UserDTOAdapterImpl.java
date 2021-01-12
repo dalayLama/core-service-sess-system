@@ -50,8 +50,7 @@ public class UserDTOAdapterImpl implements UserDTOAdapter {
                 user.getEmail(),
                 DTOCity,
                 user.getSex(),
-                user.getBirthday(),
-                user.getSecurityKey()
+                user.getBirthday()
         );
     }
 }
